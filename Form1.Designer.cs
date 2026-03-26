@@ -49,6 +49,8 @@
             btnC = new Button();
             btnCE = new Button();
             btnDel = new Button();
+            btnConvert = new Button();
+            btnDot = new Button();
             SuspendLayout();
             // 
             // txtCalculate
@@ -279,11 +281,35 @@
             btnDel.UseVisualStyleBackColor = true;
             btnDel.Click += btnDel_Click;
             // 
+            // btnConvert
+            // 
+            btnConvert.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            btnConvert.Location = new Point(60, 854);
+            btnConvert.Name = "btnConvert";
+            btnConvert.Size = new Size(117, 99);
+            btnConvert.TabIndex = 21;
+            btnConvert.Text = "±";
+            btnConvert.UseVisualStyleBackColor = true;
+            btnConvert.Click += btnConvert_Click;
+            // 
+            // btnDot
+            // 
+            btnDot.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            btnDot.Location = new Point(367, 854);
+            btnDot.Name = "btnDot";
+            btnDot.Size = new Size(117, 99);
+            btnDot.TabIndex = 22;
+            btnDot.Text = ".";
+            btnDot.UseVisualStyleBackColor = true;
+            btnDot.Click += btnDot_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(693, 1029);
+            Controls.Add(btnDot);
+            Controls.Add(btnConvert);
             Controls.Add(btnDel);
             Controls.Add(btnCE);
             Controls.Add(btnC);
@@ -334,5 +360,7 @@
         private Button btnC;
         private Button btnCE;
         private Button btnDel;
+        private Button btnConvert;
+        private Button btnDot;
     }
 }

@@ -34,13 +34,13 @@ namespace SimpleCalculator
                     isClear = false;
                 }
                 // 전체 식에 현재 입력 반영
-                txtCalculate.Text = expression + txtResult.Text;
+                txtCalculate.Text = expression + FormatForExpression(txtResult.Text);
             }
             else
             {
                 txtResult.Text += btn.Text;
                 // 전체 식에 현재 입력 반영
-                txtCalculate.Text = expression + txtResult.Text;
+                txtCalculate.Text = expression + FormatForExpression(txtResult.Text);
             }
         }
 
@@ -57,7 +57,7 @@ namespace SimpleCalculator
                 lastOp = op;
                 lastOperand = num;
                 // 전체 식에 이번 항과 '=', 결과 추가
-                expression += txtResult.Text + " = " + result.ToString();
+                expression += FormatForExpression(txtResult.Text) + " = " + FormatForExpression(result.ToString());
                 if (txtCalculate.Text != "Cannot divide by zero") txtCalculate.Text = expression;
                 // 연산 완료로 보류 연산 초기화
                 op = 0;
@@ -70,7 +70,7 @@ namespace SimpleCalculator
                 double prev = result;
                 ApplyOperation(lastOp, lastOperand);
                 // 전체 식에 반복 연산 표시
-                if (txtCalculate.Text != "Cannot divide by zero") txtCalculate.Text = prev.ToString() + " " + OpToString(lastOp) + " " + lastOperand.ToString() + " = " + result.ToString();
+                if (txtCalculate.Text != "Cannot divide by zero") txtCalculate.Text = FormatForExpression(prev.ToString()) + " " + OpToString(lastOp) + " " + FormatForExpression(lastOperand.ToString()) + " = " + FormatForExpression(result.ToString());
             }
 
             txtResult.Text = result.ToString();
@@ -95,7 +95,7 @@ namespace SimpleCalculator
                     if (num == 0)
                     {
                         // 간단한 0으로 나누기 처리
-                        txtCalculate.Text = "Cannot divide by zero";
+                        txtCalculate.Text = FormatForExpression(expression) + (string.IsNullOrEmpty(expression) ? "" : " ") + FormatForExpression(txtResult.Text) + " / 0 =";
                         txtResult.Text = "Cannot divide by zero";
                         result = 0;
                         op = 0;
@@ -138,14 +138,14 @@ namespace SimpleCalculator
                 // 보류중인 연산이 없으면 현재 숫자를 결과로 설정
                 result = num;
                 // 현재 입력된 숫자와 연산자를 식에 추가
-                expression += txtResult.Text + " " + OpToString(newOp) + " ";
+                expression += FormatForExpression(txtResult.Text) + " " + OpToString(newOp) + " ";
             }
             else
             {
                 // 보류중인 연산을 즉시 적용
                 ApplyOperation(op, num);
                 // 보류중인 연산 뒤에 현재 항과 새 연산자를 추가
-                expression += txtResult.Text + " " + OpToString(newOp) + " ";
+                expression += FormatForExpression(txtResult.Text) + " " + OpToString(newOp) + " ";
             }
 
             // 다음 입력을 위해 준비
@@ -165,14 +165,14 @@ namespace SimpleCalculator
                 txtResult.Text = "0.";
                 isClear = false;
                 // 전체 식에 현재 입력 반영
-                txtCalculate.Text = expression + txtResult.Text;
+                txtCalculate.Text = expression + FormatForExpression(txtResult.Text);
                 return;
             }
 
             if (!txtResult.Text.Contains('.'))
             {
                 txtResult.Text += ".";
-                txtCalculate.Text = expression + txtResult.Text;
+                txtCalculate.Text = expression + FormatForExpression(txtResult.Text);
             }
         }
 
@@ -236,7 +236,36 @@ namespace SimpleCalculator
             }
 
             // 전체 식 표시 갱신
-            txtCalculate.Text = isClear ? expression : expression + txtResult.Text;
+            txtCalculate.Text = isClear ? expression : expression + FormatForExpression(txtResult.Text);
+        }
+
+        private void btnConvert_Click(object sender, EventArgs e)
+        {
+            // 현재 피연산자의 부호를 바꿈
+            if (!isClear && txtResult.Text != "Cannot divide by zero")
+            {
+                if (double.TryParse(txtResult.Text, out double num))
+                {
+                    num = -num;
+                    txtResult.Text = num.ToString();
+                    // 전체 식 표시 업데이트
+                    txtCalculate.Text = expression + FormatForExpression(txtResult.Text);
+                }
+            }
+        }
+
+        // 음수는 괄호로 감싸서 표시
+        private string FormatForExpression(string s)
+        {
+            if (double.TryParse(s, out double v))
+            {
+                if (v < 0)
+                {
+                    return "(" + v.ToString() + ")";
+                }
+                return v.ToString();
+            }
+            return s;
         }
 
         // 연산자 코드를 기호 문자열로 변환
