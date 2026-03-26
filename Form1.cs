@@ -12,6 +12,8 @@ namespace SimpleCalculator
         short lastOp = 0;
         // 전체 식 표시용 문자열
         string expression = "";
+        // 내부 평가용 원시 식 (숫자와 기호, 공백으로 토큰 구분)
+        string exprRaw = "";
         // 현재 연산자 저장 (0 ~ 4)
         short op = 0;
 
@@ -33,48 +35,41 @@ namespace SimpleCalculator
                 {
                     isClear = false;
                 }
-                // 전체 식에 현재 입력 반영
-                txtCalculate.Text = expression + FormatForExpression(txtResult.Text);
+                // 전체 식에 현재 입력 반영 (expression이 비어있지 않으면 공백 추가)
+                txtCalculate.Text = string.IsNullOrEmpty(expression) ? FormatForExpression(txtResult.Text) : expression + " " + FormatForExpression(txtResult.Text);
             }
             else
             {
                 txtResult.Text += btn.Text;
-                // 전체 식에 현재 입력 반영
-                txtCalculate.Text = expression + FormatForExpression(txtResult.Text);
+                // 전체 식에 현재 입력 반영 (expression이 비어있지 않으면 공백 추가)
+                txtCalculate.Text = string.IsNullOrEmpty(expression) ? FormatForExpression(txtResult.Text) : expression + " " + FormatForExpression(txtResult.Text);
             }
         }
 
         private void btnCalculate_Click(object sender, EventArgs e)
         {
-            double num = Convert.ToDouble(txtResult.Text);
-
-            // 보류중인 연산자가 있으면 현재 표시된 숫자에 적용
-            if (op != 0)
+            // 만약 현재 입력이 있으면 원시 식에 추가
+            if (!isClear)
             {
-                // 보류중인 연산 수행
-                ApplyOperation(op, num);
-                // '=' 반복 눌렀을 때를 위해 기억
-                lastOp = op;
-                lastOperand = num;
-                // 전체 식에 이번 항과 '=', 결과 추가
-                expression += FormatForExpression(txtResult.Text) + " = " + FormatForExpression(result.ToString());
-                if (txtCalculate.Text != "Cannot divide by zero") txtCalculate.Text = expression;
-                // 연산 완료로 보류 연산 초기화
-                op = 0;
-                // 식 초기화(다음 연산을 위해 결과를 시작값으로 사용)
+                exprRaw = string.IsNullOrEmpty(exprRaw) ? txtResult.Text : exprRaw + " " + txtResult.Text;
+                expression = string.IsNullOrEmpty(expression) ? FormatForExpression(txtResult.Text) : expression + " " + FormatForExpression(txtResult.Text);
+            }
+
+            if (!string.IsNullOrEmpty(exprRaw))
+            {
+                var toks = exprRaw.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
+                double? eval = EvaluateTokens(toks);
+                if (eval.HasValue)
+                {
+                    result = eval.Value;
+                    txtResult.Text = result.ToString();
+                    txtCalculate.Text = BuildExpressionFromTokens(toks) + " = " + FormatForExpression(result.ToString());
+                }
+                // 초기화
+                exprRaw = "";
                 expression = "";
+                isClear = true;
             }
-            else if (lastOp != 0)
-            {
-                // '='를 반복 누르면 마지막 연산을 다시 수행
-                double prev = result;
-                ApplyOperation(lastOp, lastOperand);
-                // 전체 식에 반복 연산 표시
-                if (txtCalculate.Text != "Cannot divide by zero") txtCalculate.Text = FormatForExpression(prev.ToString()) + " " + OpToString(lastOp) + " " + FormatForExpression(lastOperand.ToString()) + " = " + FormatForExpression(result.ToString());
-            }
-
-            txtResult.Text = result.ToString();
-            isClear = true;
         }
 
         // 주어진 피연산자를 사용해 현재 결과에 연산 적용
@@ -131,31 +126,48 @@ namespace SimpleCalculator
         // + - * / 연산자 동작을 통일하는 일반 핸들러
         private void HandleOperator(short newOp)
         {
-            double num = Convert.ToDouble(txtResult.Text);
-
-            if (op == 0)
+            // 연산자 누르면 현재 입력(있다면)을 원시 식에 추가 후 연산자 추가
+            if (!isClear)
             {
-                // 보류중인 연산이 없으면 현재 숫자를 결과로 설정
-                result = num;
-                // 현재 입력된 숫자와 연산자를 식에 추가
-                expression += FormatForExpression(txtResult.Text) + " " + OpToString(newOp) + " ";
+                exprRaw = string.IsNullOrEmpty(exprRaw) ? txtResult.Text : exprRaw + " " + txtResult.Text;
             }
-            else
-            {
-                // 보류중인 연산을 즉시 적용
-                ApplyOperation(op, num);
-                // 보류중인 연산 뒤에 현재 항과 새 연산자를 추가
-                expression += FormatForExpression(txtResult.Text) + " " + OpToString(newOp) + " ";
-            }
+            exprRaw = string.IsNullOrEmpty(exprRaw) ? OpToString(newOp) : exprRaw + " " + OpToString(newOp);
+            expression = BuildExpressionFromTokens(exprRaw.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList());
 
-            // 다음 입력을 위해 준비
+            // 준비
+            if (double.TryParse(txtResult.Text, out double tmp)) result = tmp;
             txtResult.Text = result.ToString();
             isClear = true;
             op = newOp;
-            // 새로운 연산 체인을 구성하므로 lastOp 초기화
             lastOp = 0;
-            // 전체 식 표시 업데이트
             txtCalculate.Text = expression;
+        }
+
+        private void btnOpenParen_Click(object sender, EventArgs e)
+        {
+            // 여는 괄호는 바로 원시 식에 추가
+            exprRaw = string.IsNullOrEmpty(exprRaw) ? "(" : exprRaw + " (";
+            expression = BuildExpressionFromTokens(exprRaw.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList());
+            txtCalculate.Text = expression;
+            // 다음 숫자 입력을 기대
+            isClear = true;
+        }
+
+        private void btnCloseParen_Click(object sender, EventArgs e)
+        {
+            // 현재 입력이 있으면 추가
+            if (!isClear)
+            {
+                exprRaw = string.IsNullOrEmpty(exprRaw) ? txtResult.Text + " )" : exprRaw + " " + txtResult.Text + " )";
+            }
+            else
+            {
+                exprRaw = string.IsNullOrEmpty(exprRaw) ? ")" : exprRaw + " )";
+            }
+            expression = BuildExpressionFromTokens(exprRaw.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList());
+            txtCalculate.Text = expression;
+            // 간단히 현재 결과로 표시
+            isClear = true;
         }
 
         private void btnDot_Click(object sender, EventArgs e)
@@ -164,15 +176,15 @@ namespace SimpleCalculator
             {
                 txtResult.Text = "0.";
                 isClear = false;
-                // 전체 식에 현재 입력 반영
-                txtCalculate.Text = expression + FormatForExpression(txtResult.Text);
+                // 전체 식에 현재 입력 반영 (expression이 비어있지 않으면 공백 추가)
+                txtCalculate.Text = string.IsNullOrEmpty(expression) ? FormatForExpression(txtResult.Text) : expression + " " + FormatForExpression(txtResult.Text);
                 return;
             }
 
             if (!txtResult.Text.Contains('.'))
             {
                 txtResult.Text += ".";
-                txtCalculate.Text = expression + FormatForExpression(txtResult.Text);
+                txtCalculate.Text = string.IsNullOrEmpty(expression) ? FormatForExpression(txtResult.Text) : expression + " " + FormatForExpression(txtResult.Text);
             }
         }
 
@@ -235,8 +247,8 @@ namespace SimpleCalculator
                 isClear = true;
             }
 
-            // 전체 식 표시 갱신
-            txtCalculate.Text = isClear ? expression : expression + FormatForExpression(txtResult.Text);
+            // 전체 식 표시 갱신 (expression과 현재 입력 사이 공백 처리)
+            txtCalculate.Text = isClear ? expression : (string.IsNullOrEmpty(expression) ? FormatForExpression(txtResult.Text) : expression + " " + FormatForExpression(txtResult.Text));
         }
 
         private void btnConvert_Click(object sender, EventArgs e)
@@ -248,8 +260,8 @@ namespace SimpleCalculator
                 {
                     num = -num;
                     txtResult.Text = num.ToString();
-                    // 전체 식 표시 업데이트
-                    txtCalculate.Text = expression + FormatForExpression(txtResult.Text);
+                    // 전체 식 표시 업데이트 (expression이 비어있지 않으면 공백 추가)
+                    txtCalculate.Text = string.IsNullOrEmpty(expression) ? FormatForExpression(txtResult.Text) : expression + " " + FormatForExpression(txtResult.Text);
                 }
             }
         }
@@ -278,6 +290,152 @@ namespace SimpleCalculator
                 3 => "×",
                 4 => "÷",
                 _ => "",
+            };
+        }
+
+        // 토큰 리스트로부터 표시용 문자열 생성 (숫자는 FormatForExpression 사용)
+        private string BuildExpressionFromTokens(List<string> toks)
+        {
+            if (toks == null || toks.Count == 0) return string.Empty;
+            var parts = new List<string>();
+            foreach (var t in toks)
+            {
+                if (t == "+" || t == "-" || t == "×" || t == "÷" || t == "(" || t == ")")
+                {
+                    parts.Add(t);
+                }
+                else
+                {
+                    parts.Add(FormatForExpression(t));
+                }
+            }
+            return string.Join(" ", parts);
+        }
+
+        // 토큰(중위표기) 리스트를 평가하여 결과 반환. 괄호와 우선순위 지원.
+        private double? EvaluateTokens(List<string> toks)
+        {
+            if (toks == null || toks.Count == 0) return null;
+
+            // 셔팅야드로 RPN 변환
+            var rpn = TokensToRpn(toks);
+            if (rpn == null) return null;
+
+            // RPN 평가
+            var stack = new Stack<double>();
+            foreach (var tk in rpn)
+            {
+                if (double.TryParse(tk, out double val))
+                {
+                    stack.Push(val);
+                }
+                else if (tk == "+" || tk == "-" || tk == "×" || tk == "÷")
+                {
+                    if (stack.Count < 2) return null;
+                    double b = stack.Pop();
+                    double a = stack.Pop();
+                    double res = 0;
+                    switch (tk)
+                    {
+                        case "+": res = a + b; break;
+                        case "-": res = a - b; break;
+                        case "×": res = a * b; break;
+                        case "÷":
+                            if (b == 0)
+                            {
+                                txtCalculate.Text = BuildExpressionFromTokens(toks) + " / 0 =";
+                                txtResult.Text = "Cannot divide by zero";
+                                return null;
+                            }
+                            res = a / b;
+                            break;
+                    }
+                    stack.Push(res);
+                }
+                else
+                {
+                    // 알 수 없는 토큰
+                    return null;
+                }
+            }
+
+            if (stack.Count != 1) return null;
+            return stack.Pop();
+        }
+
+        // 셔팅야드 알고리즘: 중위표기 토큰을 RPN으로 변환
+        private List<string>? TokensToRpn(List<string> toks)
+        {
+            var output = new List<string>();
+            var ops = new Stack<string>();
+
+            foreach (var t in toks)
+            {
+                if (double.TryParse(t, out _))
+                {
+                    output.Add(t);
+                }
+                else if (t == "+" || t == "-" || t == "×" || t == "÷")
+                {
+                    while (ops.Count > 0)
+                    {
+                        var top = ops.Peek();
+                        if (top == "(") break;
+                        int precTop = GetPrecedence(top);
+                        int precT = GetPrecedence(t);
+                        if (precTop > precT || (precTop == precT))
+                        {
+                            output.Add(ops.Pop());
+                            continue;
+                        }
+                        break;
+                    }
+                    ops.Push(t);
+                }
+                else if (t == "(")
+                {
+                    ops.Push(t);
+                }
+                else if (t == ")")
+                {
+                    bool found = false;
+                    while (ops.Count > 0)
+                    {
+                        var top = ops.Pop();
+                        if (top == "(")
+                        {
+                            found = true;
+                            break;
+                        }
+                        output.Add(top);
+                    }
+                    if (!found) return null; // 괄호 불일치
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            while (ops.Count > 0)
+            {
+                var top = ops.Pop();
+                if (top == "(" || top == ")") return null; // 괄호 불일치
+                output.Add(top);
+            }
+
+            return output;
+        }
+
+        private int GetPrecedence(string op)
+        {
+            return op switch
+            {
+                "+" => 1,
+                "-" => 1,
+                "×" => 2,
+                "÷" => 2,
+                _ => 0,
             };
         }
     }

@@ -51,16 +51,18 @@
             btnDel = new Button();
             btnConvert = new Button();
             btnDot = new Button();
+            btnOpenParen = new Button();
+            btnCloseParen = new Button();
             SuspendLayout();
             // 
             // txtCalculate
             // 
             txtCalculate.BorderStyle = BorderStyle.FixedSingle;
             txtCalculate.Font = new Font("Pretendard JP Variable SemiBold", 24F, FontStyle.Bold);
-            txtCalculate.Location = new Point(54, 120);
+            txtCalculate.Location = new Point(54, 119);
             txtCalculate.Name = "txtCalculate";
             txtCalculate.ReadOnly = true;
-            txtCalculate.Size = new Size(580, 65);
+            txtCalculate.Size = new Size(743, 65);
             txtCalculate.TabIndex = 0;
             // 
             // txtResult
@@ -69,7 +71,7 @@
             txtResult.Font = new Font("Pretendard JP Variable SemiBold", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
             txtResult.Location = new Point(54, 221);
             txtResult.Name = "txtResult";
-            txtResult.Size = new Size(580, 65);
+            txtResult.Size = new Size(743, 65);
             txtResult.TabIndex = 1;
             txtResult.Text = "0";
             // 
@@ -303,11 +305,35 @@
             btnDot.UseVisualStyleBackColor = true;
             btnDot.Click += btnDot_Click;
             // 
+            // btnOpenParen
+            // 
+            btnOpenParen.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            btnOpenParen.Location = new Point(680, 314);
+            btnOpenParen.Name = "btnOpenParen";
+            btnOpenParen.Size = new Size(117, 99);
+            btnOpenParen.TabIndex = 23;
+            btnOpenParen.Text = "(";
+            btnOpenParen.UseVisualStyleBackColor = true;
+            btnOpenParen.Click += btnOpenParen_Click;
+            // 
+            // btnCloseParen
+            // 
+            btnCloseParen.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            btnCloseParen.Location = new Point(680, 446);
+            btnCloseParen.Name = "btnCloseParen";
+            btnCloseParen.Size = new Size(117, 99);
+            btnCloseParen.TabIndex = 24;
+            btnCloseParen.Text = ")";
+            btnCloseParen.UseVisualStyleBackColor = true;
+            btnCloseParen.Click += btnCloseParen_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(693, 1029);
+            ClientSize = new Size(852, 1029);
+            Controls.Add(btnCloseParen);
+            Controls.Add(btnOpenParen);
             Controls.Add(btnDot);
             Controls.Add(btnConvert);
             Controls.Add(btnDel);
@@ -362,5 +388,7 @@
         private Button btnDel;
         private Button btnConvert;
         private Button btnDot;
+        private Button btnOpenParen;
+        private Button btnCloseParen;
     }
 }
