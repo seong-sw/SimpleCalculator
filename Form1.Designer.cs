@@ -28,12 +28,266 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            txtCalculate = new TextBox();
+            txtResult = new TextBox();
+            lblTop = new Label();
+            btnCalculate = new Button();
+            btnOne = new Button();
+            btnTwo = new Button();
+            btnThree = new Button();
+            btnFour = new Button();
+            btnFive = new Button();
+            btnSix = new Button();
+            btnSeven = new Button();
+            btnEight = new Button();
+            btnNine = new Button();
+            btnZero = new Button();
+            btnAdd = new Button();
+            button1 = new Button();
+            button2 = new Button();
+            button3 = new Button();
+            SuspendLayout();
+            // 
+            // txtCalculate
+            // 
+            txtCalculate.BorderStyle = BorderStyle.FixedSingle;
+            txtCalculate.Font = new Font("Pretendard JP Variable SemiBold", 24F, FontStyle.Bold);
+            txtCalculate.Location = new Point(54, 120);
+            txtCalculate.Name = "txtCalculate";
+            txtCalculate.ReadOnly = true;
+            txtCalculate.Size = new Size(580, 65);
+            txtCalculate.TabIndex = 0;
+            // 
+            // txtResult
+            // 
+            txtResult.BorderStyle = BorderStyle.FixedSingle;
+            txtResult.Font = new Font("Pretendard JP Variable SemiBold", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            txtResult.Location = new Point(54, 221);
+            txtResult.Name = "txtResult";
+            txtResult.Size = new Size(580, 65);
+            txtResult.TabIndex = 1;
+            txtResult.Text = "0";
+            // 
+            // lblTop
+            // 
+            lblTop.AutoSize = true;
+            lblTop.Font = new Font("Pretendard JP Variable SemiBold", 18F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            lblTop.Location = new Point(54, 41);
+            lblTop.Name = "lblTop";
+            lblTop.Size = new Size(300, 43);
+            lblTop.TabIndex = 2;
+            lblTop.Text = "Simple Calculator";
+            // 
+            // btnCalculate
+            // 
+            btnCalculate.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            btnCalculate.Location = new Point(523, 854);
+            btnCalculate.Name = "btnCalculate";
+            btnCalculate.Size = new Size(117, 99);
+            btnCalculate.TabIndex = 3;
+            btnCalculate.Text = "=";
+            btnCalculate.UseVisualStyleBackColor = true;
+            btnCalculate.Click += btnCalculate_Click;
+            // 
+            // btnOne
+            // 
+            btnOne.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            btnOne.Location = new Point(60, 717);
+            btnOne.Name = "btnOne";
+            btnOne.Size = new Size(117, 99);
+            btnOne.TabIndex = 4;
+            btnOne.Text = "1";
+            btnOne.UseVisualStyleBackColor = true;
+            btnOne.Click += btnNum_Click;
+            // 
+            // btnTwo
+            // 
+            btnTwo.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            btnTwo.Location = new Point(211, 717);
+            btnTwo.Name = "btnTwo";
+            btnTwo.Size = new Size(117, 99);
+            btnTwo.TabIndex = 5;
+            btnTwo.Text = "2";
+            btnTwo.UseVisualStyleBackColor = true;
+            btnTwo.Click += btnNum_Click;
+            // 
+            // btnThree
+            // 
+            btnThree.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            btnThree.Location = new Point(367, 717);
+            btnThree.Name = "btnThree";
+            btnThree.Size = new Size(117, 99);
+            btnThree.TabIndex = 6;
+            btnThree.Text = "3";
+            btnThree.UseVisualStyleBackColor = true;
+            btnThree.Click += btnNum_Click;
+            // 
+            // btnFour
+            // 
+            btnFour.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            btnFour.Location = new Point(60, 582);
+            btnFour.Name = "btnFour";
+            btnFour.Size = new Size(117, 99);
+            btnFour.TabIndex = 7;
+            btnFour.Text = "4";
+            btnFour.UseVisualStyleBackColor = true;
+            btnFour.Click += btnNum_Click;
+            // 
+            // btnFive
+            // 
+            btnFive.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            btnFive.Location = new Point(211, 582);
+            btnFive.Name = "btnFive";
+            btnFive.Size = new Size(117, 99);
+            btnFive.TabIndex = 8;
+            btnFive.Text = "5";
+            btnFive.UseVisualStyleBackColor = true;
+            btnFive.Click += btnNum_Click;
+            // 
+            // btnSix
+            // 
+            btnSix.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            btnSix.Location = new Point(367, 582);
+            btnSix.Name = "btnSix";
+            btnSix.Size = new Size(117, 99);
+            btnSix.TabIndex = 9;
+            btnSix.Text = "6";
+            btnSix.UseVisualStyleBackColor = true;
+            btnSix.Click += btnNum_Click;
+            // 
+            // btnSeven
+            // 
+            btnSeven.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            btnSeven.Location = new Point(60, 446);
+            btnSeven.Name = "btnSeven";
+            btnSeven.Size = new Size(117, 99);
+            btnSeven.TabIndex = 10;
+            btnSeven.Text = "7";
+            btnSeven.UseVisualStyleBackColor = true;
+            btnSeven.Click += btnNum_Click;
+            // 
+            // btnEight
+            // 
+            btnEight.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            btnEight.Location = new Point(211, 446);
+            btnEight.Name = "btnEight";
+            btnEight.Size = new Size(117, 99);
+            btnEight.TabIndex = 11;
+            btnEight.Text = "8";
+            btnEight.UseVisualStyleBackColor = true;
+            btnEight.Click += btnNum_Click;
+            // 
+            // btnNine
+            // 
+            btnNine.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            btnNine.Location = new Point(367, 446);
+            btnNine.Name = "btnNine";
+            btnNine.Size = new Size(117, 99);
+            btnNine.TabIndex = 12;
+            btnNine.Text = "9";
+            btnNine.UseVisualStyleBackColor = true;
+            btnNine.Click += btnNum_Click;
+            // 
+            // btnZero
+            // 
+            btnZero.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            btnZero.Location = new Point(211, 854);
+            btnZero.Name = "btnZero";
+            btnZero.Size = new Size(117, 99);
+            btnZero.TabIndex = 13;
+            btnZero.Text = "0";
+            btnZero.UseVisualStyleBackColor = true;
+            btnZero.Click += btnNum_Click;
+            // 
+            // btnAdd
+            // 
+            btnAdd.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            btnAdd.Location = new Point(523, 717);
+            btnAdd.Name = "btnAdd";
+            btnAdd.Size = new Size(117, 99);
+            btnAdd.TabIndex = 14;
+            btnAdd.Text = "+";
+            btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Click += btnAdd_Click;
+            // 
+            // button1
+            // 
+            button1.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            button1.Location = new Point(523, 582);
+            button1.Name = "button1";
+            button1.Size = new Size(117, 99);
+            button1.TabIndex = 15;
+            button1.Text = "+";
+            button1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            button2.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            button2.Location = new Point(523, 446);
+            button2.Name = "button2";
+            button2.Size = new Size(117, 99);
+            button2.TabIndex = 16;
+            button2.Text = "+";
+            button2.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            button3.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            button3.Location = new Point(523, 314);
+            button3.Name = "button3";
+            button3.Size = new Size(117, 99);
+            button3.TabIndex = 17;
+            button3.Text = "+";
+            button3.UseVisualStyleBackColor = true;
+            // 
+            // Form1
+            // 
+            AutoScaleDimensions = new SizeF(10F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Text = "Form1";
+            ClientSize = new Size(693, 1029);
+            Controls.Add(button3);
+            Controls.Add(button2);
+            Controls.Add(button1);
+            Controls.Add(btnAdd);
+            Controls.Add(btnZero);
+            Controls.Add(btnNine);
+            Controls.Add(btnEight);
+            Controls.Add(btnSeven);
+            Controls.Add(btnSix);
+            Controls.Add(btnFive);
+            Controls.Add(btnFour);
+            Controls.Add(btnThree);
+            Controls.Add(btnTwo);
+            Controls.Add(btnOne);
+            Controls.Add(btnCalculate);
+            Controls.Add(lblTop);
+            Controls.Add(txtResult);
+            Controls.Add(txtCalculate);
+            Name = "Form1";
+            Text = "Simple Calculator";
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
+
+        private TextBox txtCalculate;
+        private TextBox txtResult;
+        private Label lblTop;
+        private Button btnCalculate;
+        private Button btnOne;
+        private Button btnTwo;
+        private Button btnThree;
+        private Button btnFour;
+        private Button btnFive;
+        private Button btnSix;
+        private Button btnSeven;
+        private Button btnEight;
+        private Button btnNine;
+        private Button btnZero;
+        private Button btnAdd;
+        private Button button1;
+        private Button button2;
+        private Button button3;
     }
 }
