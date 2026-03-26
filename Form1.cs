@@ -429,7 +429,7 @@ namespace SimpleCalculator
 
         private int GetPrecedence(string op)
         {
-            return op switch
+            return op switch // 연산자 우선순위: +, -는 1, ×, ÷는 2
             {
                 "+" => 1,
                 "-" => 1,
