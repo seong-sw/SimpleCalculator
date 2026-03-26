@@ -70,7 +70,7 @@ namespace SimpleCalculator
                 double prev = result;
                 ApplyOperation(lastOp, lastOperand);
                 // 전체 식에 반복 연산 표시
-                if(txtCalculate.Text != "Cannot divide by zero") txtCalculate.Text = prev.ToString() + " " + OpToString(lastOp) + " " + lastOperand.ToString() + " = " + result.ToString();
+                if (txtCalculate.Text != "Cannot divide by zero") txtCalculate.Text = prev.ToString() + " " + OpToString(lastOp) + " " + lastOperand.ToString() + " = " + result.ToString();
             }
 
             txtResult.Text = result.ToString();
@@ -189,6 +189,56 @@ namespace SimpleCalculator
             txtCalculate.Text = "";
         }
 
+        // 전체 초기화
+        private void btnC_Click(object sender, EventArgs e)
+        {
+            // 전체 초기화는 기존 Clear와 동일하게 동작
+            btnClear_Click(sender, e);
+        }
+
+        // 현재 입력값만 지우기 (식은 유지)
+        private void btnCE_Click(object sender, EventArgs e)
+        {
+            txtResult.Text = "0";
+            isClear = true;
+            // 표시되는 전체 식에서는 현재 입력을 제거
+            txtCalculate.Text = expression;
+        }
+
+        // 현재 입력의 마지막 문자 삭제
+        private void btnDel_Click(object sender, EventArgs e)
+        {
+            // 에러 메시지 상태에서는 전체 입력 초기화
+            if (txtResult.Text == "Cannot divide by zero")
+            {
+                txtResult.Text = "0";
+                isClear = true;
+                txtCalculate.Text = expression;
+                return;
+            }
+
+            if (isClear)
+            {
+                // 새로 시작된 상태에서는 삭제할 게 없음
+                txtResult.Text = "0";
+                txtCalculate.Text = expression;
+                return;
+            }
+
+            if (txtResult.Text.Length > 1)
+            {
+                txtResult.Text = txtResult.Text.Substring(0, txtResult.Text.Length - 1);
+            }
+            else
+            {
+                txtResult.Text = "0";
+                isClear = true;
+            }
+
+            // 전체 식 표시 갱신
+            txtCalculate.Text = isClear ? expression : expression + txtResult.Text;
+        }
+
         // 연산자 코드를 기호 문자열로 변환
         private string OpToString(short operation)
         {
@@ -196,8 +246,8 @@ namespace SimpleCalculator
             {
                 1 => "+",
                 2 => "-",
-                3 => "*",
-                4 => "/",
+                3 => "×",
+                4 => "÷",
                 _ => "",
             };
         }

@@ -46,6 +46,9 @@
             btnSubtract = new Button();
             btnMultiply = new Button();
             btnDivide = new Button();
+            btnC = new Button();
+            btnCE = new Button();
+            btnDel = new Button();
             SuspendLayout();
             // 
             // txtCalculate
@@ -243,11 +246,47 @@
             btnDivide.UseVisualStyleBackColor = true;
             btnDivide.Click += btnDivide_Click;
             // 
+            // btnC
+            // 
+            btnC.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            btnC.Location = new Point(60, 314);
+            btnC.Name = "btnC";
+            btnC.Size = new Size(117, 99);
+            btnC.TabIndex = 18;
+            btnC.Text = "C";
+            btnC.UseVisualStyleBackColor = true;
+            btnC.Click += btnC_Click;
+            // 
+            // btnCE
+            // 
+            btnCE.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            btnCE.Location = new Point(211, 314);
+            btnCE.Name = "btnCE";
+            btnCE.Size = new Size(117, 99);
+            btnCE.TabIndex = 19;
+            btnCE.Text = "CE";
+            btnCE.UseVisualStyleBackColor = true;
+            btnCE.Click += btnCE_Click;
+            // 
+            // btnDel
+            // 
+            btnDel.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            btnDel.Location = new Point(367, 314);
+            btnDel.Name = "btnDel";
+            btnDel.Size = new Size(117, 99);
+            btnDel.TabIndex = 20;
+            btnDel.Text = "Del";
+            btnDel.UseVisualStyleBackColor = true;
+            btnDel.Click += btnDel_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(693, 1029);
+            Controls.Add(btnDel);
+            Controls.Add(btnCE);
+            Controls.Add(btnC);
             Controls.Add(btnDivide);
             Controls.Add(btnMultiply);
             Controls.Add(btnSubtract);
@@ -292,5 +331,8 @@
         private Button btnSubtract;
         private Button btnMultiply;
         private Button btnDivide;
+        private Button btnC;
+        private Button btnCE;
+        private Button btnDel;
     }
 }
