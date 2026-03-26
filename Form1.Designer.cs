@@ -43,9 +43,9 @@
             btnNine = new Button();
             btnZero = new Button();
             btnAdd = new Button();
-            button1 = new Button();
-            button2 = new Button();
-            button3 = new Button();
+            btnSubtract = new Button();
+            btnMultiply = new Button();
+            btnDivide = new Button();
             SuspendLayout();
             // 
             // txtCalculate
@@ -210,44 +210,47 @@
             btnAdd.UseVisualStyleBackColor = true;
             btnAdd.Click += btnAdd_Click;
             // 
-            // button1
+            // btnSubtract
             // 
-            button1.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
-            button1.Location = new Point(523, 582);
-            button1.Name = "button1";
-            button1.Size = new Size(117, 99);
-            button1.TabIndex = 15;
-            button1.Text = "+";
-            button1.UseVisualStyleBackColor = true;
+            btnSubtract.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            btnSubtract.Location = new Point(523, 582);
+            btnSubtract.Name = "btnSubtract";
+            btnSubtract.Size = new Size(117, 99);
+            btnSubtract.TabIndex = 15;
+            btnSubtract.Text = "-";
+            btnSubtract.UseVisualStyleBackColor = true;
+            btnSubtract.Click += btnSubtract_Click;
             // 
-            // button2
+            // btnMultiply
             // 
-            button2.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
-            button2.Location = new Point(523, 446);
-            button2.Name = "button2";
-            button2.Size = new Size(117, 99);
-            button2.TabIndex = 16;
-            button2.Text = "+";
-            button2.UseVisualStyleBackColor = true;
+            btnMultiply.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            btnMultiply.Location = new Point(523, 446);
+            btnMultiply.Name = "btnMultiply";
+            btnMultiply.Size = new Size(117, 99);
+            btnMultiply.TabIndex = 16;
+            btnMultiply.Text = "×";
+            btnMultiply.UseVisualStyleBackColor = true;
+            btnMultiply.Click += btnMuliply_Click;
             // 
-            // button3
+            // btnDivide
             // 
-            button3.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
-            button3.Location = new Point(523, 314);
-            button3.Name = "button3";
-            button3.Size = new Size(117, 99);
-            button3.TabIndex = 17;
-            button3.Text = "+";
-            button3.UseVisualStyleBackColor = true;
+            btnDivide.Font = new Font("Pretendard JP Variable", 24F, FontStyle.Bold, GraphicsUnit.Point, 128);
+            btnDivide.Location = new Point(523, 314);
+            btnDivide.Name = "btnDivide";
+            btnDivide.Size = new Size(117, 99);
+            btnDivide.TabIndex = 17;
+            btnDivide.Text = "÷";
+            btnDivide.UseVisualStyleBackColor = true;
+            btnDivide.Click += btnDivide_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(693, 1029);
-            Controls.Add(button3);
-            Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(btnDivide);
+            Controls.Add(btnMultiply);
+            Controls.Add(btnSubtract);
             Controls.Add(btnAdd);
             Controls.Add(btnZero);
             Controls.Add(btnNine);
@@ -286,8 +289,8 @@
         private Button btnNine;
         private Button btnZero;
         private Button btnAdd;
-        private Button button1;
-        private Button button2;
-        private Button button3;
+        private Button btnSubtract;
+        private Button btnMultiply;
+        private Button btnDivide;
     }
 }

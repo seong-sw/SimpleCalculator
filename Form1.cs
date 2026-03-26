@@ -29,7 +29,7 @@ namespace SimpleCalculator
             if (isClear)
             {
                 txtResult.Text = btn.Text;
-                if(txtResult.Text != "0")
+                if (txtResult.Text != "0")
                 {
                     isClear = false;
                 }
@@ -56,9 +56,9 @@ namespace SimpleCalculator
                 // '=' 반복 눌렀을 때를 위해 기억
                 lastOp = op;
                 lastOperand = num;
-                // 전체 식에 이번 항과 '=' 추가
-                expression += txtResult.Text + " =";
-                txtCalculate.Text = expression;
+                // 전체 식에 이번 항과 '=', 결과 추가
+                expression += txtResult.Text + " = " + result.ToString();
+                if (txtCalculate.Text != "Cannot divide by zero") txtCalculate.Text = expression;
                 // 연산 완료로 보류 연산 초기화
                 op = 0;
                 // 식 초기화(다음 연산을 위해 결과를 시작값으로 사용)
@@ -69,8 +69,8 @@ namespace SimpleCalculator
                 // '='를 반복 누르면 마지막 연산을 다시 수행
                 double prev = result;
                 ApplyOperation(lastOp, lastOperand);
-                // 전체 식에 반복 연산 표시: prev [op] lastOperand =
-                txtCalculate.Text = prev.ToString() + " " + OpToString(lastOp) + " " + lastOperand.ToString() + " =";
+                // 전체 식에 반복 연산 표시
+                if(txtCalculate.Text != "Cannot divide by zero") txtCalculate.Text = prev.ToString() + " " + OpToString(lastOp) + " " + lastOperand.ToString() + " = " + result.ToString();
             }
 
             txtResult.Text = result.ToString();
@@ -95,8 +95,7 @@ namespace SimpleCalculator
                     if (num == 0)
                     {
                         // 간단한 0으로 나누기 처리
-                        // 전체 식에 현재 시도한 식을 보여주기
-                        txtCalculate.Text = expression + txtResult.Text + " / 0 =";
+                        txtCalculate.Text = "Cannot divide by zero";
                         txtResult.Text = "Cannot divide by zero";
                         result = 0;
                         op = 0;
@@ -114,17 +113,17 @@ namespace SimpleCalculator
             HandleOperator(1);
         }
 
-        private void btnSub_Click(object sender, EventArgs e)
+        private void btnSubtract_Click(object sender, EventArgs e)
         {
             HandleOperator(2);
         }
 
-        private void btnMul_Click(object sender, EventArgs e)
+        private void btnMuliply_Click(object sender, EventArgs e)
         {
             HandleOperator(3);
         }
 
-        private void btnDiv_Click(object sender, EventArgs e)
+        private void btnDivide_Click(object sender, EventArgs e)
         {
             HandleOperator(4);
         }
